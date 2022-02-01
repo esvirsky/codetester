@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Fizz Buzz Python Test{% endblock %}
+
+{% block extra_head %}
+    <style>
+        #test-section {
+            display: none;
+        }
+        #passed-section {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h3>FizzBuzz</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            The famous FizzBuzz coding problem was popularized in an article on codinghorror.com in 2007
+            (you can read about it <a href="https://blog.codinghorror.com/why-cant-programmers-program/">here</a>).
+            The basis of the article is that some ridiculous number of software developers, like 99/100, were failing a very simple
+            interview coding question.
+            <br/><br/>
+            I know that people have very strong feelings about interview coding tests to determine
+            developer skill level, and wanted to see what percent of developers can pass this test in 2019.
+            <br/><br/>
+            Want to take the test and find out if you can pass the FizzBuzz question? The code here is in Python. When you
+            are ready to start hit the "Start" button.
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <button id="btn-start" class="btn btn-primary">Start the Test</button>
+        </div>
+    </div>
+    <div id="test-section" class="mt-4">
+        <div id="codetester">
+        </div>
+        <div id="passed-section" class="row mt-3">
+            <div class="col-sm-12 text-center">
+                <h3>Well Done!</h3>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_body %}
+    <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+    <link rel="stylesheet" href="{% static 'assessment/codetester.css' %}">
+    <script src="{% static 'js/codemirror.js' %}"></script>
+    <script src="{% static 'js/mode/python.js' %}"></script>
+    <script src="{% static 'assessment/codetester.js' %}"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+
+            $("#btn-start").click(function() {
+                $("#btn-start").hide();
+                $("#test-section").show();
+
+                Codetester(document.getElementById("codetester"), {
+                    widgetUrl: "{{ widget_link }}",
+                    testResultCallback: testResultCallback
+                });
+            });
+
+            function testResultCallback(passed) {
+                if (passed) {
+                    {#$("#codetester-submit-btn").attr("disabled", true);#}
+                    $("#passed-section").show();
+                }
+            }
+
+        });
+
+    </script>
+
+{% endblock %}

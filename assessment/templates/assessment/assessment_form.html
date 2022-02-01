@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Assessment Edit{% endblock %}
+
+{% block content %}
+
+    {% if assessment %}
+        <h3 class="text-center">Editing Assessment {{ assessment.name }}</h3>
+    {% else %}
+        <h3 class="text-center">Creating Assessment</h3>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-sm-6">
+            {% crispy form %}
+        </div>
+    </div>
+
+    {% if assessment %}
+        <div class="row mt-4">
+            <div class="col-sm-12 text-center">
+                <h3 class="float-left">Questions</h3>
+                <a class="btn btn-primary float-right" href="{% url 'assessment:question_create' %}?assessment_id={{ assessment.id }}" role="button">Create Question</a>
+            </div>
+        </div>
+        <div class="row mt-20 mb-20">
+            <div class="col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Created</th>
+                            <th>Answers</th>
+                            <th>Widget Submissions</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for question in assessment.questions.all %}
+                            <tr>
+                                <td><a href="{% url 'assessment:question_update' question.id %}">{{ question.title|truncatechars:25 }}</a></td>
+                                <td>{{ question.created_at|date:"m/d/Y" }}</td>
+                                <td>{{ question.answers.count }}</td>
+                                <td>
+                                    <a href="{% url 'assessment:question_submissions' question.id %}">
+                                        {{ question.question_submissions.count }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'assessment:question_delete' question.id %}"
+                                       class="btn btn-danger float-right" role="button">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h3 class="mt-4">Create Assessment Link</h3>
+        {% if assessment.questions.count > 0 %}
+            <div>Creates a link you can send for someone to take this assessment</div>
+            <div>Or send them to
+                <a href="{% url 'assessment:start_assessment_self' %}?identifier={{ signed_assessment_id }}">
+                    https://{{  request.get_host }}{% url 'assessment:start_assessment_self' %}?identifier={{ signed_assessment_id }}
+                </a> to fill out their own info
+            </div>
+            <div class="row pt-4">
+                <div class="col-sm-6">
+                    <div>Name or email of the person you'll send the link to</div>
+                    <div id="create-link-error" class="error pt-2"></div>
+                    <div class="pt-2 pb-3"><input id="create-link-identifier" name="create-link-identifier" class="form-control"/></div>
+                    <div id="assessment-link" class="pt-2 pb-3"></div>
+                    <div><button id="btn-create-link" class="btn btn-primary">Create Link</button></div>
+                </div>
+            </div>
+
+            <h3 class="mt-4">Attempts</h3>
+                There have been {{ assessment.attempts.count }} attempts so far. View them
+                <a href="{% url 'assessment:assessment_attempts' %}?assessment_id={{ assessment.id }}">
+                    here
+                </a>
+        {% else %}
+            Need at least one question to create a link
+        {% endif %}
+
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_body %}
+    <script>
+
+        $(document).ready(function() {
+            $("#btn-create-link").click(function() {
+                $("#create-link-error").text("");
+                $("#assessment-link").text("");
+                var identifier = $("#create-link-identifier").val();
+                if (identifier == "") {
+                    $("#create-link-error").text("Identifier can't be empty");
+                    return false;
+                }
+
+                var data = {
+                    "assessment_id": {{ assessment.id }},
+                    "identifier": identifier,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                };
+
+                $.post( "{% url 'assessment:create_assessment_link' %}", data ).done( function(response) {
+                    $("#assessment-link").text(response);
+                }).fail(function(response){
+                    $("#create-link-error").text(response);
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block head_title %}Start Assessment{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{ assessment.name }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            {% crispy form %}
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block head_title %}{% block title %}{% endblock %}{% endblock %}
+
+{% block extra_head %}
+    <meta name="description" content="{% block meta-description %}{% endblock %}" />
+    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+{% endblock %}
+
+{% block extra_body %}
+    {% block script %}{% endblock %}
+{% endblock %}

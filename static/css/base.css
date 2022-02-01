@@ -1,0 +1,100 @@
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.card-deck .card {
+  min-width: 220px;
+}
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+h5.logo a {
+  color:#000000 !important;
+  text-decoration:none;
+}
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+  }
+
+#question-form .asteriskField {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+.passed {
+    color: green;
+}
+
+.failed {
+    color: red;
+}
+
+.submission-box {
+    padding: 10px;
+    border: 1px solid;
+}
+
+.image-popup img {
+    border: 2px solid blue;
+    max-width: 100%;
+}
+
+video {
+    width: 100%;
+}
+
+#widget-img {
+    width: 100%;
+}
+
+#widget-info pre.prettyprint {
+    padding: 10px;
+    white-space: pre-wrap;
+}
+
+.tutorial pre.prettyprint{
+    padding: 5px;
+    background: #f4f4f4;
+    max-width: 600px;
+}
+
+.tutorial .codetester-title-div {
+    display: None;
+}
+
+.tutorial .codetester-ide-div .CodeMirror {
+    height: 100px;
+}
+
+.tutorial .medium .codetester-ide-div .CodeMirror {
+    height: 200px;
+}
+
+.tutorial .codetester-results-textarea {
+    height: 100px;
+}
+
+.tutorial h4 {
+    margin-top: 20px;
+}

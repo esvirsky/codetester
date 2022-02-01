@@ -1,0 +1,77 @@
+.codetester-widget {
+    width: 100%;
+    border: 1px dashed;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.codetester-widget textarea {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    height: 200px;
+}
+
+.codetester-ide-div {
+    margin-top: 10px;
+}
+
+.codetester-results-div {
+    margin-top: 10px;
+}
+
+.codetester-instructions-div {
+    white-space: pre-wrap;
+}
+
+.codetester-submit-div {
+    margin-top: 10px;
+}
+
+.codetester-submit-btn {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.codetester-submit-btn:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.codetester-submit-btn:hover:disabled {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    cursor: default;
+}
+
+.codetester-title-div {
+    text-align: center;
+}
+
+.codetester-powered-by {
+    float:right;
+}
+
+.codetester-widget textarea#codetester-results-textarea-loading {
+    height: 60px;
+}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Coding Assessment Tool{% endblock %}
+
+{% block content %}
+    <div id="widget-info">
+        <div class="row">
+            <div>
+                A free code testing widget you can put on your site. Let's users write and run their code on a webpage.<br/><br/>
+
+                For an example, take a look at <a href="{% url 'general:fizzbuzz_python' %}">FizzBuzz</a> or our <a href="{% url 'general:python_tutorial1' %}">Basic Python Tutorial</a>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="offset-sm-2 col-sm-8">
+                <img id="widget-img" src="{% static 'general/widget.png' %}"/>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div>
+                <h4>How To</h4>
+
+                <p>
+                    You need to include javascript and css files from <a href="https://codemirror.net">codemirror.net</a>
+                    and codetester.io. here's how it looks:<br/>
+                    <pre class="prettyprint lang-html">
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://codetester.io/static/assessment/codetester-0.2.css&quot;&gt;
+
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js&quot;&gt;&lt;/script&gt;
+&lt;!-- use the right mode here based on your language - https://codemirror.net/mode/ --&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://codetester.io/static/assessment/codetester-0.2.js&quot;&gt;&lt;/script&gt;
+                    </pre>
+
+                    Create an assessment and add a question - <a href="{% url 'general:coding_assessment_tool' %}">tutorial video here</a><br/>
+                    Navigate to your question, you should see a widget link, use it like so:<br/><br/>
+
+                    <pre class="prettyprint lang-javascript">
+Codetester(elementToAppendTo, {
+    widgetUrl: "YOUR_QUESTION_WIDGET_URL",
+    testResultCallback: function(passed) { console.log(passed); }
+});
+                    </pre>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extra_body %}
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+{% endblock %}

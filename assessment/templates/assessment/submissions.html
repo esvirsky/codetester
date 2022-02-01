@@ -1,0 +1,41 @@
+{% load language_tags %}
+
+<h5 class="mt-4">Submissions</h5>
+    <div class="submission-box">
+        {% for submission in submissions %}
+            <div class="pt-4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        Submitted at {{ submission.created_at|date:'Y-m-d g:i:s a e' }}<br/>
+                        User Identifier:
+                            {% if submission.answer %}
+                                {{ submission.answer.assessment_attempt.assignee }}
+                            {% else %}
+                                {{ submission.identifier }}
+                            {% endif %}
+                        <br/>
+                        {% if submission.answer %}
+                            Submitted as part of assessment: submission.answer.question.assessment.name <br/>
+                        {% endif %}
+                        {% if submission.passed %}<span class="passed">Passed</span>{% else %}<span class="failed">Failed</span>{% endif %}<br/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-6">
+                        <div>
+                            <pre class="prettyprint {% pretty_print_language question.assessment.language %}">
+{{ submission.code }}
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div>
+                            <textarea id="id_results" class="textarea form-control" disabled rows="7">
+{{ submission.response }}
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>

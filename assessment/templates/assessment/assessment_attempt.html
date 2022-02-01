@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head_title %}Assessment Attempt{% endblock %}
+
+{% block content %}
+    Assessment attempt for '{{ assessment_attempt.assessment.name }}' by '{{ assessment_attempt.assignee }}'
+
+    {% for answer in assessment_attempt.answers.all %}
+        <h4 class="mt-4">Question {{ answer.question.title }}</h4>
+        <div class="row">
+            <div class="col-sm-12">
+                Started at {{ answer.created_at|date:"Y-m-d g:i a e" }}<br/>
+                Finished at {{ answer.submissions.last.created_at|date:"Y-m-d g:i a e" }}<br/>
+                {% if answer.passed %}<span class="passed">Passed</span>{% else %}<span class="failed">Failed</span>{% endif %}<br/>
+            </div>
+        </div>
+
+        {% include 'assessment/submissions.html' with question=answer.question submissions=answer.submissions.all %}
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block extra_body %}
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+{% endblock %}

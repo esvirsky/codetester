@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  db:
+    container_name: codetest
+    image: postgres:11.5-alpine
+    user: "postgres"
+    volumes:
+      - codetest:/var/lib/postgresql/data/
+    ports:
+      - "11001:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+volumes:
+    codetest:
+        name: "codetest"

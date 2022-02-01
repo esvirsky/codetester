@@ -1,0 +1,8 @@
+wheel==0.33.6
+Django==2.2.6
+django-allauth==0.40.0
+django-crispy-forms==1.7.2
+psycopg2-binary==2.8.3
+requests==2.22.0
+django-fluent-blogs==2.0.4
+django-fluent-contents[code,text,rawhtml]

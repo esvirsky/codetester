@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="mx-auto mt-4">
+
+            <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+              {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+
+                {% if form.username.errors %}<div class="alert alert-danger" role="alert">{{ form.username.errors.0 }}</div> {% endif %}
+                <div class="form-group row">
+
+                    <label for="id_login" class="col-sm-3" col-form-label>Username:</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="username" class="form-control" placeholder="Username" autofocus="autofocus" maxlength="150" required id="id_username">
+                    </div>
+                </div>
+
+                {% if form.email.errors %}<div class="alert alert-danger" role="alert">{{ form.email.errors.0 }}</div> {% endif %}
+                <div class="form-group row">
+                    <label for="id_email" class="col-sm-3" col-form-label>Email:</label>
+                    <div class="col-sm-9">
+                        <input type="email" name="email" class="form-control" placeholder="E-mail address" autofocus="autofocus" maxlength="150" required id="id_email">
+                    </div>
+                </div>
+
+                {% if form.password1.errors %}<div class="alert alert-danger" role="alert">{{ form.password1.errors.0 }}</div> {% endif %}
+                <div class="form-group row">
+                    <label for="id_password1" class="col-sm-3" col-form-label>Password:</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password1" class="form-control" placeholder="Password" autofocus="autofocus" maxlength="150" required id="id_email">
+                    </div>
+                </div>
+
+                {% if form.password2.errors %}<div class="alert alert-danger" role="alert">{{ form.password2.errors.0 }}</div> {% endif %}
+                <div class="form-group row">
+                    <label for="id_password2" class="col-sm-3" col-form-label>Confirm Password:</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password2" class="form-control" placeholder="Password" autofocus="autofocus" maxlength="150" required id="id_password2">
+                    </div>
+                </div>
+
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button class="btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

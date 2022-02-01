@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Python Tutorial - Basics{% endblock %}
+
+{% block content %}
+
+    <div class="row tutorial">
+        <div class="col-sm-12">
+            <h3>Python Tutorial - Basics</h3>
+            <p>This is a beginner Python tutorial that will walk you through the basics. Python is a great
+            language for beginners, it's very readable and easy to use. Let's jump in.</p>
+
+            <h4>Hello World</h4>
+            <p>The first app that you write in any language is going to be Hello World, you just write:<p/>
+            <pre class="prettyprint lang-python">
+>>> print("Hello World")
+Hello World</pre>
+            <p>With print() you can output information to your console, it's called the Standard Output - stdout.
+             <br/>Try it out:</p>
+            <div id="codetester_hello">
+            </div>
+
+            <h4>Data Types and Variables</h4>
+            <p>
+                You can't do much without variables. Variables are how you store and pass values around.
+                There are a few basic data types you should get familiar with: boolean, string, integer, float.
+                There are more than that, but these will get you on your way. Here are some examples of each:
+            <p/>
+            <pre class="prettyprint lang-python">
+# Boolean
+>>> a = True
+>>> b = False
+# String
+>>> c = 'Hello'
+>>> d = "There" # either ' or " works
+# Integer
+>>> e = 5
+>>> f = -4
+# Float
+>>> g = 1.03</pre>
+            <p>And of course you can do various operations with variables - like in math</p>
+<pre class="prettyprint lang-python">
+>>> x = e + f + 1 # this will be 2
+>>> g = c + " " + d # "Hello There"
+>>> print(g + x) # This will not work!
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+# Can't combine strings and numbers like that
+
+>>> print(g + str(x)) # converting number to string
+Hello There2
+
+# or
+
+>>> print("%s%s" % (g, x)) # but this is a little more advanced
+Hello There2
+</pre>
+            <p>Why don't you try?</p>
+            <div id="codetester_variables">
+            </div>
+
+            <h4>Structures</h4>
+            <p>Let's go over some of the most common structures in Python</p>
+            <h5>List</h5>
+            <p>Just like the name says it's a list of things, here's an example of a list of integers:</p>
+<pre class="prettyprint lang-python">
+>>> a = [5, 2, 8, 3]
+</pre>
+            <p>A list is ordered and indexable, meaning you can grab something by index. You can also add and remove things from it.</p>
+<pre class="prettyprint lang-python">
+>>> b = a[0] # indexes always start with 0
+>>> c = a[2]
+>>> print(b + c)
+13
+>>> a.append(2)
+>>> print(a)
+[5, 2, 8, 3, 2]
+</pre>
+            <p>
+                Want to check out all the functions you can call on a list? take a look at the
+                <a href="https://docs.python.org/3/tutorial/datastructures.html">Python official documentation</a>.
+            </p>
+            <h5>Tuple</h5>
+            <p>Similar to a list, but you can't change it once it's created</p>
+<pre class="prettyprint lang-python">
+>>> a = ("hey", "there")
+</pre>
+            <p>You can, grab items from it by index, just like a list. But you can't modify it. It's good for when you
+            need something that you know where everything will be</p>
+<pre class="prettyprint lang-python">
+>>> a = ("John", "1111 S Belleview Dr")
+>>> name, address = a
+>>> print(name)
+John
+</pre>
+
+            <h5>Set</h5>
+            <p>A Set is slightly different than a list, it's unordered and unindexed. You can't just pull out
+            something from it like you would with a list. It also doesn't support duplicates. It's a good, fast structure
+            for when you need to look something up.</p>
+<pre class="prettyprint lang-python">
+>>> invited_guests = ["john", "kate", "mary", "john"]
+>>> unique_invited_guests = set(invited_guests)
+>>> print(unique_invited_guests)
+{'mary', 'kate', 'john'}
+# let's check if 'kate' can make it
+>>> print('kate' in unique_invited_guests) # nice and fast lookup
+True
+</pre>
+            <h5>Dictionary</h5>
+            <p>Along with List, a Dictionary is something you will constantly use. It's a key/value structure.
+            it's unordered and you can only index it by the key.</p>
+<pre class="prettyprint lang-python">
+>>> ages = {'kate': 24, 'john': 53, 'jeff': 20}
+>>> print(ages['john'])
+53
+</pre>
+            <p>You can also mix data structures</p>
+<pre class="prettyprint lang-python">
+>>> data = {
+...          'kate': ('smith', 23, 'female'),
+...         'john': ('brown', 53, 'male')
+...}
+>>> print(data['kate'][2])
+female
+</pre>
+            <h5>Test</h5>
+            <div id="codetester_invites">
+            </div>
+
+            <h4>Control Flow</h4>
+            <p>To be able to actually do anything useful with those variables and structures, you need to be able
+            to control the flow of the application</p>
+            <h5>If/Else</h5>
+            <p>Using if/else and conditions we can control what our program does. Let's continue with the example above,
+            we are inviting guests to our kid's birthday party, and we only want to invite them if they are below a certain age.</p>
+<pre class="prettyprint lang-python">
+>>> name, age = "john", 20
+>>> if age <= 12:
+>>>    print("invited")
+# We aren't going to invite john because he didn't pass our condition
+</pre>
+            <p>You can use only 'if', or add 'elif' and 'else' for more control</p>
+<pre class="prettyprint lang-python">
+>>> name, age = "john", 80
+>>> if age > 3 and age <= 12:
+>>>    print("invited")
+>>> elif age > 12:
+>>>    print("not invited")
+>>> elif age > 65:
+>>>    print("invited to party #2")
+>>> else:
+>>>     print("too young")
+not invited
+</pre>
+            <p>I threw a little curve ball in there, the second condition got evaluated first and we didn't invite,
+            even though John should have been invited to party #2. Any idea how to solve that?</p>
+            <div id="codetester_invite_john" class="medium">
+            </div>
+            <br/>
+            <h5>For Loop</h5>
+            <p>What if we want to iterate over something? That's what a For loop is for</p>
+<pre class="prettyprint lang-python">
+>>> names = ['john', 'kate', 'sarah']
+>>> for name in name:
+>>>     print(name)
+john
+kate
+sarah
+</pre>
+            <p>Or we want to do it by index</p>
+<pre class="prettyprint lang-python">
+>>> names = ['john', 'kate', 'sarah']
+>>> for i in range(0, len(names)):
+>>>     print(names[i])
+john
+kate
+sarah
+</pre>
+
+            <h5>While loop</h5>
+            <p>A while loop will keep looping until the condition becomes False</p>
+<pre class="prettyprint lang-python">
+>>> names = ['john', 'kate', 'sarah']
+>>> i = 0
+>>> while names[i] != 'sarah':
+>>>     print(names[i])
+>>>     i += 1
+john
+kate
+</pre>
+            <p>You can also use 'continue' and 'break' to either continue the loop no matter where you are or to break out of it.
+                Works for both <b>for</b> and <b>while</b> loops</p>
+
+<pre class="prettyprint lang-python">
+>>> i = 0
+>>> while True:
+>>>     if i == 2:
+>>>         i += 1 # have to remember to increment or we'll be stuck here forever
+>>>         continue
+>>>     if i == 4:
+>>>         break
+>>>     print(i)
+>>>     i += 1
+0
+1
+3
+</pre>
+
+            Check out <a href="https://docs.python.org/3/tutorial/controlflow.html">the Python official documentation</a> for more examples</p>
+
+            <h5>Test</h5>
+            <p>Ok, let's put all of that together:</p>
+            <div id="codetester_tutorial1_test" class="medium">
+            </div>
+
+            <h4>Done</h4>
+            <p>Great Job! Even though you are just starting and this stuff seems hard, programming is just a matter of practicing over and over.
+            At some point all this stuff becomes second nature.</p>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_body %}
+    <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+    <link rel="stylesheet" href="{% static 'assessment/codetester.css' %}">
+    <script src="{% static 'js/codemirror.js' %}"></script>
+    <script src="{% static 'js/mode/python.js' %}"></script>
+    <script src="{% static 'assessment/codetester.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+            Codetester(document.getElementById("codetester_hello"), {
+                widgetUrl: "{{ q1_widget_link }}",
+                testResultCallback: function(passed) {}
+            });
+
+            Codetester(document.getElementById("codetester_variables"), {
+                widgetUrl: "{{ q2_widget_link }}",
+                testResultCallback: function(passed) {}
+            });
+
+            Codetester(document.getElementById("codetester_invites"), {
+                widgetUrl: "{{ q3_widget_link }}",
+                testResultCallback: function(passed) {}
+            });
+
+            Codetester(document.getElementById("codetester_invite_john"), {
+                widgetUrl: "{{ q4_widget_link }}",
+                testResultCallback: function(passed) {}
+            });
+
+            Codetester(document.getElementById("codetester_tutorial1_test"), {
+                widgetUrl: "{{ q5_widget_link }}",
+                testResultCallback: function(passed) {}
+            });
+        });
+
+    </script>
+
+{% endblock %}

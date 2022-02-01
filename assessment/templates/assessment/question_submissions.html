@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block head_title %}Question Submissions{% endblock %}
+
+{% block content %}
+    Question submissions for {{ question.title }}
+
+    {% include 'assessment/submissions.html' with question=question submissions=question.question_submissions.all %}
+
+{% endblock %}

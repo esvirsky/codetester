@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head_title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="float-left">Assessments</h3>
+            <a href="{% url 'assessment:assessment_create' %}" class="btn btn-primary float-right" role="button">Create Assessment</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Assessment</th>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Attempts</th>
+                        <th scope="col">Created</th>
+                        <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for assessment in assessments %}
+                        <tr>
+                            <td><a href="{% url 'assessment:assessment_update' assessment.id %}">{{ assessment.name }}</a></td>
+                            <td>{{ assessment.questions.count }}</td>
+                            <td>
+                                <a href="{% url 'assessment:assessment_attempts' %}?assessment_id={{ assessment.id }}">
+                                    {{ assessment.attempts.count }} (View)
+                                </a>
+                            </td>
+                            <td>{{ assessment.created_at|date:"m/d/Y" }}</td>
+                            <td>
+                                <a href="{% url 'assessment:assessment_delete' assessment.id %}" class="btn btn-danger float-right" role="button">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

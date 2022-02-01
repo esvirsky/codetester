@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% load language_tags %}
+
+{% block head_title %}Take Assessment{% endblock %}
+
+{% block content %}
+
+    {% if question %}
+        <h3>Question {{ question_num|add:1 }} out of {{ total_questions }}</h3>
+        <div class="row">
+            <div class="col-sm-12">
+                {{ question.instructions|linebreaks }}
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-sm-12">
+                <textarea id="code">
+{{ question.starting_code }}
+                </textarea>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-sm-12">
+                <textarea id="id_results" class="textarea form-control" disabled rows="7">
+Submit to see if your code passed
+                </textarea>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="col-sm-12">
+                <button id="skip-question" class="btn btn-secondary float-right">Skip</button>
+                <button id="run-code" class="btn btn-primary">Submit</button>
+                <button id="next-question" class="btn btn-success" style="display:none">Passed, Next Question</button>
+            </div>
+        </div>
+    {% else %}
+        <h3>Assessment Finished</h3>
+        Your assessment is complete, please wait for the employer to get back to you. Thank you for taking the Test.
+    {% endif %}
+
+{% endblock %}
+
+{% block extra_body %}
+
+    {% if question %}
+        <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+        <script src="{% static 'js/codemirror.js' %}"></script>
+
+        <script src="{% codemirror_mode_javascript question.assessment.language %}"></script>
+        <script src="{% static 'assessment/code_run.js' %}"></script>
+
+        <script>
+
+            $(document).ready(function() {
+
+                var csrfToken = "{{csrf_token}}";
+                var submitUrl = "{% url 'assessment:submit_assessment_answer' %}";
+                var checkUrl = "{% url 'assessment:check_submission' %}";
+
+                var answerCode = CodeMirror.fromTextArea(document.getElementById("code"), {
+                    mode: "{% codemirror_mode question.assessment.language %}",
+                    lineNumbers: true,
+                    indentUnit: 4,
+                    matchBrackets: true
+                });
+
+                $("#run-code").click(function() {
+                    submitCode(submitUrl,
+                        checkUrl,
+                        answerCode.getValue(),
+                        null,
+                        null,
+                        csrfToken,
+                        $("#id_results"),
+                        function(passed) {
+                            if (passed) {
+                                $("#skip-question").hide();
+                                $("#next-question").show();
+                            }
+                        }
+                    );
+                });
+
+                $("#skip-question").click(function() {
+                    if(!confirm("Are you sure you want to skip?"))
+                        return;
+
+                    window.location.href = "{% url 'assessment:question_done' %}";
+                 });
+
+                $("#next-question").click(function() {
+                    window.location.href = "{% url 'assessment:question_done' %}";
+                });
+            });
+
+        </script>
+    {% endif %}
+{% endblock %}

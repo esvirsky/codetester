@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+
+    <title>{% block head_title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block body %}
+
+        <!-- menu -->
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <h5 class="my-0 mr-md-auto font-weight-normal logo"><a href="/">CodeTester</a></h5>
+          <nav class="my-2 my-md-0 mr-md-3">
+
+            <a class="p-2 text-dark" href="{% url 'general:coding_assessment_tool' %}">Assessment Tool</a>
+            <a class="p-2 text-dark" href="{% url 'general:widget' %}">Widget</a>
+            <a class="p-2 text-dark" href="{% url 'general:contact' %}">Contact</a>
+            {% if user.is_authenticated %}
+                <a class="p-2 text-dark" href="{% url 'general:dashboard' %}">Dashboard</a>
+                <a class="p-2 text-dark" href="{% url 'account_logout' %}">Logout</a>
+            {% endif %}
+          </nav>
+            {% if not user.is_authenticated %}
+                <a class="btn btn-outline-primary" href="{% url 'account_login' %}">Login</a>
+            {% endif %}
+        </div>
+
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-sm-12 top-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- content -->
+            {% block content %}
+            {% endblock %}
+
+            <!-- footer -->
+            <footer class="pt-4 my-5 border-top">
+                <div class="row">
+                    <div class="mx-auto">
+                     QueWorx &copy; 2019
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        window['_fs_debug'] = false;
+        window['_fs_host'] = 'fullstory.com';
+        window['_fs_script'] = 'fullstory.com/s/fs.js';
+        window['_fs_org'] = 'P1KRY';
+        window['_fs_namespace'] = 'FS';
+        (function(m,n,e,t,l,o,g,y){
+            if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+            g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
+            o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
+            y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+            g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
+            g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
+            g.log = function(a,b) { g("log", [a,b]) };
+            g.consent=function(a){g("consent",!arguments.length||a)};
+            g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+            g.clearUserCookie=function(){};
+        })(window,document,window['_fs_namespace'],'script','user');
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2397479-7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-2397479-7');
+    </script>
+
+    {% block extra_body %}
+    {% endblock %}
+
+  </body>
+</html>

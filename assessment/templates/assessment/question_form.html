@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load language_tags %}
+
+{% block head_title %}Question{% endblock %}
+
+{% block content %}
+
+    <a href="{% url 'assessment:assessment_update' assessment.id %}">Back to Assessment</a>
+
+    {% if question %}
+        <h3 class="text-center">Editing Question {{ question.name }}</h3>
+    {% else %}
+        <h3 class="text-center">Creating Question</h3>
+    {% endif %}
+
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <b>Direct link for widget:</b> {{ widget_link }}
+        </div>
+    </div>
+
+    {% if question %}
+        <div class="row mt-3">
+            <div class="col-sm-12">
+                <b>Question submissions:</b>
+                <a href="{% url 'assessment:question_submissions' question.id %}">
+                    {{ question.question_submissions.count }}
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            {% crispy form %}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extra_body %}
+
+    <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+    <script src="{% static 'js/codemirror.js' %}"></script>
+
+    <script src="{% codemirror_mode_javascript assessment.language %}"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="{% static 'assessment/code_run.js' %}"></script>
+
+    <script>
+
+        $(document).ready(function() {
+
+            var csrfToken = "{{csrf_token}}";
+            var submitUrl = "{% url 'assessment:run_code' %}";
+            var checkUrl = "{% url 'assessment:check_submission' %}";
+
+            var startingCode = CodeMirror.fromTextArea(document.getElementById("id_starting_code"), {
+                mode: "{% codemirror_mode assessment.language %}",
+                lineNumbers: true,
+                indentUnit: 4,
+                matchBrackets: true
+            });
+
+            var testingCode = CodeMirror.fromTextArea(document.getElementById("id_testing_code"), {
+                mode: "{% codemirror_mode assessment.language %}",
+                lineNumbers: true,
+                indentUnit: 4,
+                matchBrackets: true
+            });
+
+            var solutionCode = CodeMirror.fromTextArea(document.getElementById("id_solution_code"), {
+                mode: "{% codemirror_mode assessment.language %}",
+                lineNumbers: true,
+                indentUnit: 4,
+                matchBrackets: true
+            });
+
+            $("#button-id-test").click(function() {
+                let sCode = solutionCode.getValue();
+                let wrap = document.getElementById("id_wrap_output");
+                if("{{ assessment.language }}" == "python" && wrap.checked) {
+                    sCode = wrapCode(sCode);
+                }
+
+                submitCode(submitUrl,
+                    checkUrl,
+                    sCode + "\n" + testingCode.getValue(),
+                    null,
+                    "{{ assessment.language }}",
+                    csrfToken,
+                    $("#id_results"),
+                    function(passed) {});
+            });
+
+            $("#question-form").submit(function() {
+                $("#id_starting_code").val(startingCode.getValue());
+                $("#id_testing_code").val(testingCode.getValue());
+                $("#id_solution_code").val(solutionCode.getValue());
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

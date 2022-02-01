@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Home{% endblock %}
+
+{% block content %}
+    <div class="offset-sm-2 col-sm-8">
+        <div class="row">
+            <div>
+                Free online code testing and remote execution tools
+            </div>
+        </div>
+
+        <h5 class="mt-4 mb-4">Run Some Code</h5>
+        Just run some code and see the output - with support for C, C++, Python, Ruby, Javascript, and Java<br/>
+        <a href="{% url 'runner:index' %}">Run Code</a>
+
+        <h5 class="mt-4 mb-4">Code Assessment Tool</h5>
+        A tool that lets you create custom online tests to screen developers<br/>
+        <a href="{% url 'general:coding_assessment_tool' %}">Coding Assement Tool</a>
+
+        <h5 class="mt-4 mb-4">Code Testing Widget</h5>
+        Lets you put a code testing widget on your site<br/>
+        <a href="{% url 'general:widget' %}">Code Testing Widget</a>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_title %}Assessment Attempts{% endblock %}
+
+{% block content %}
+    <h3>Assessment Attempts for '{{ assessment.name }}'</h3>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">User Identifier</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">Time Spent</th>
+                        <th scope="col">Passed</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for assessment_attempt in assessment.attempts.all %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'assessment:assessment_attempt' assessment_attempt.id %}">
+                                    {{ assessment_attempt.assignee }}
+                                </a>
+                            </td>
+                            <td>{{ assessment_attempt.created_at|date:"Y-m-d g:i a e" }}</td>
+                            <td>{{ assessment_attempt.get_time_spent }}</td>
+                            <td>{{ assessment_attempt.get_questions_passed }}/{{ assessment_attempt.assessment.questions.count }}</td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

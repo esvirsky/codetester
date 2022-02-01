@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+{% load language_tags %}
+
+{% block head_title %}Code Tester{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-5">
+            <label class="sr-only" for="language-select">Language</label>
+            <select name="language" class="select form-control form-control mr-sm-2"
+                    required="" id="language-select" placeholder="Language">
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="go">Go</option>
+                <option value="java">Java</option>
+                <option value="javascript">Javascript</option>
+                <option value="python" selected>Python</option>
+                <option value="ruby">Ruby</option>
+            </select>
+        </div>
+
+        <div class="col-sm-2"><button id='run-button' class="btn btn-primary">Run</button></div>
+    </div>
+
+    <div class="row pt-3">
+        <div class="col-sm-12">
+            Code:
+            <textarea id="code">
+            </textarea>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-sm-12">
+            Input (optional):
+        <textarea id="stdin" class="textarea form-control" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="col-sm-12">
+            <textarea id="results" class="textarea form-control" disabled rows="7">
+            </textarea>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extra_body %}
+    <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+    <script src="{% static 'js/codemirror.js' %}"></script>
+
+    <script src="{% codemirror_mode_javascript 'python' %}"></script>
+    <script src="{% codemirror_mode_javascript 'java' %}"></script>
+    <script src="{% codemirror_mode_javascript 'go' %}"></script>
+    <script src="{% codemirror_mode_javascript 'ruby' %}"></script>
+    <script src="{% codemirror_mode_javascript 'javascript' %}"></script>
+    <script src="{% static 'assessment/code_run.js' %}"></script>
+
+    <script>
+            $(document).ready(function() {
+
+                var csrfToken = "{{csrf_token}}";
+                var submitUrl = "{% url 'assessment:run_code' %}";
+                var checkUrl = "{% url 'assessment:check_submission' %}";
+
+                var language = null;
+                var code = null;
+
+                var startingCode = {};
+                startingCode['c'] = "#include <stdio.h>\n" +
+                    "int main() {\n" +
+                    "   printf(\"hello\");\n" +
+                    "   return 0;\n" +
+                    "}";
+                startingCode['cpp'] = "#include <iostream>\n" +
+                    "using namespace std;\n" +
+                    "\n" +
+                    "int main() {\n" +
+                    "   cout << \"hello\";\n" +
+                    "   return 0;\n" +
+                    "}";
+                startingCode['python'] = "print('hello')";
+                startingCode['ruby'] = "puts \"hello\"";
+                startingCode['javascript'] = "console.log(\"hello\")";
+                startingCode['go'] = "package main\n" +
+                    "\n" +
+                    "import \"fmt\"\n" +
+                    "\n" +
+                    "func main() {\n" +
+                    "\tfmt.Println(\"hello\")\n" +
+                    "}";
+                startingCode['java'] = "class Main {\n" +
+                    "    public static void main(String args[]) {\n" +
+                    "    \tSystem.out.println(\"hello\");\n" +
+                    "    }\n" +
+                    "}";
+
+                setLanguage();
+
+                $("#language-select").change(setLanguage);
+                $("#run-button").click(run);
+
+                function setLanguage() {
+                    language = $("#language-select").val();
+
+                    $(".CodeMirror").remove();
+
+                    console.log(language);
+                    $("#code").val(startingCode[language]);
+                    code = CodeMirror.fromTextArea(document.getElementById("code"), {
+                        mode: language,
+                        lineNumbers: true,
+                        indentUnit: 4,
+                        matchBrackets: true
+                    });
+                }
+
+                function run() {
+                    let sCode = code.getValue();
+
+                    submitCode(submitUrl,
+                        checkUrl,
+                        sCode,
+                        $('#stdin').val(),
+                        language,
+                        csrfToken,
+                        $("#results"),
+                        function(passed) {
+                            // Strip that passed stuff, should refactor, but...
+                            $("#results").val($("#results").val().replace('Passed:   True', ''));
+                            $("#results").val($("#results").val().replace('Passed:   False', ''));
+                        });
+                }
+            });
+
+    </script>
+{% endblock %}
